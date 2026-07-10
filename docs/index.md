@@ -20,3 +20,5 @@ class UsersApi:
 ```
 
 `UsersApi` is a regular pico component — inject it into services and call `get_user(7)`; the request, JSON parsing and error raising are generated for you.
+
+**See it in context**: the [flagship use case](https://dperezcabrera.github.io/pico-boot/flagship/) wires this module into a full order platform together with the rest of the ecosystem.
