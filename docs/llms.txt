@@ -1,0 +1,22 @@
+# pico-httpx
+
+> Declarative HTTP clients for the Pico ecosystem over httpx
+
+## Docs
+
+- [Home](https://dperezcabrera.github.io/pico-httpx/)
+- [Getting Started](https://dperezcabrera.github.io/pico-httpx/getting-started/)
+- [Architecture](https://dperezcabrera.github.io/pico-httpx/architecture/)
+- [index](https://dperezcabrera.github.io/pico-httpx/reference/)
+- [API](https://dperezcabrera.github.io/pico-httpx/reference/api/)
+- [AI Coding Skills](https://dperezcabrera.github.io/pico-httpx/skills/)
+- [FAQ](https://dperezcabrera.github.io/pico-httpx/faq/)
+- [Troubleshooting](https://dperezcabrera.github.io/pico-httpx/troubleshooting/)
+- [Changelog](https://dperezcabrera.github.io/pico-httpx/CHANGELOG/)
+
+## For agents
+
+- [Full docs in one file](https://dperezcabrera.github.io/pico-httpx/llms-full.txt)
+- [AGENTS.md (conventions and boundaries)](https://raw.githubusercontent.com/dperezcabrera/pico-httpx/main/AGENTS.md)
+- [Flagship use case (whole ecosystem wired)](https://dperezcabrera.github.io/pico-boot/flagship/)
+- [PyPI](https://pypi.org/project/pico-httpx/)
