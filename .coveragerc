@@ -1,0 +1,18 @@
+[run]
+branch = True
+source =
+    pico_httpx
+omit =
+    */_version.py
+
+[paths]
+pico_httpx =
+    src/pico_httpx
+    .tox/*/lib/*/site-packages/pico_httpx
+    .tox/*/site-packages/pico_httpx
+    */site-packages/pico_httpx
+
+[report]
+show_missing = True
+omit =
+    */_version.py
