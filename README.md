@@ -1,10 +1,16 @@
 # pico-httpx
 
-[![PyPI version](https://img.shields.io/pypi/v/pico-httpx.svg)](https://pypi.org/project/pico-httpx/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![CI](https://github.com/dperezcabrera/pico-httpx/actions/workflows/ci.yml/badge.svg)](https://github.com/dperezcabrera/pico-httpx/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/pico-httpx.svg)](https://pypi.org/project/pico-httpx/)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/dperezcabrera/pico-httpx)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+![CI (tox matrix)](https://github.com/dperezcabrera/pico-httpx/actions/workflows/ci.yml/badge.svg)
 [![codecov](https://codecov.io/gh/dperezcabrera/pico-httpx/branch/main/graph/badge.svg)](https://codecov.io/gh/dperezcabrera/pico-httpx)
-[![Docs](https://img.shields.io/badge/docs-mkdocs-blue)](https://dperezcabrera.github.io/pico-httpx/)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dperezcabrera_pico-httpx&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dperezcabrera_pico-httpx)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=dperezcabrera_pico-httpx&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=dperezcabrera_pico-httpx)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dperezcabrera_pico-httpx&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dperezcabrera_pico-httpx)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/pico-httpx)](https://pypi.org/project/pico-httpx/)
+[![Docs](https://img.shields.io/badge/Docs-pico--httpx-blue?style=flat&logo=readthedocs&logoColor=white)](https://dperezcabrera.github.io/pico-httpx/)
+[![Interactive Lab](https://img.shields.io/badge/Learn-online-green?style=flat&logo=python&logoColor=white)](https://dperezcabrera.github.io/pico-learn/)
 
 Declarative HTTP clients for the [pico ecosystem](https://github.com/dperezcabrera/pico-ioc): write the interface, get the implementation. Powered by httpx.
 
