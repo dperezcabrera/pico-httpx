@@ -1,0 +1,43 @@
+# pico-httpx
+
+> Declarative HTTP clients for the Pico ecosystem over httpx
+
+Install: `pip install pico-httpx`. Import surface: `from pico_httpx import ...`.
+
+## Usage
+
+```python
+import httpx
+from pico_httpx import http_client, get, post
+
+@http_client(base_url="https://api.example.com")   # or resolve from config, see below
+class UsersApi:
+    @get("/users/{user_id}")
+    def get_user(self, user_id: int, verbose: bool | None = None) -> dict: ...
+
+    @post("/users")
+    async def create_user(self, json: dict) -> dict: ...
+
+    @get("/users/{user_id}/avatar")
+    def avatar(self, user_id: int) -> httpx.Response: ...
+```
+
+## Public API
+
+- `delete(path: str)`
+- `get(path: str)`
+- `http_client(_cls=None, *, base_url: str='', name: str='')` — Turn a class of request stubs into an injectable HTTP client component.
+- `patch(path: str)`
+- `post(path: str)`
+- `put(path: str)`
+- `class HttpSettings` — ``clients`` maps a client name to its settings, e.g.
+
+## Docs
+
+- docs/CHANGELOG.md
+- docs/architecture.md
+- docs/faq.md
+- docs/getting-started.md
+- docs/reference/ (2 pages)
+- docs/skills.md
+- docs/troubleshooting.md
