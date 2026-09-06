@@ -5,3 +5,13 @@ from .client import patch as patch
 from .client import post as post
 from .client import put as put
 from .config import HttpSettings as HttpSettings
+
+__all__ = [
+    "HttpSettings",
+    "delete",
+    "get",
+    "http_client",
+    "patch",
+    "post",
+    "put",
+]
