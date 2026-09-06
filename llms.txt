@@ -24,13 +24,13 @@ class UsersApi:
 
 ## Public API
 
+- `class HttpSettings` — ``clients`` maps a client name to its settings, e.g.
 - `delete(path: str)`
 - `get(path: str)`
 - `http_client(_cls=None, *, base_url: str='', name: str='')` — Turn a class of request stubs into an injectable HTTP client component.
 - `patch(path: str)`
 - `post(path: str)`
 - `put(path: str)`
-- `class HttpSettings` — ``clients`` maps a client name to its settings, e.g.
 
 ## Docs
 
