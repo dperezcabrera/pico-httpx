@@ -14,10 +14,22 @@ Yes. Sync stubs use a shared `httpx.Client`, async stubs a shared `httpx.AsyncCl
 
 ## How does this compose with retries and circuit breakers?
 
-Stack pico-resilience decorators on the same stub — `@retryable` on top:
+The client never retries by itself: a timeout or a refused connection reaches the caller after one attempt, as the httpx exception. Stack pico-resilience decorators on the same stub, `@retryable` on top:
 
 ```python
 @retryable(max_attempts=3, retry_on=(httpx.HTTPError,))
 @get("/users/{user_id}")
 def get_user(self, user_id: int) -> dict: ...
 ```
+
+A transient timeout or connection error is then retried and the caller only sees the successful result. When every attempt fails, the caller gets `pico_resilience.RetryExhaustedError`, with the last httpx exception in `last_error`.
+
+`httpx.HTTPError` also covers non-2xx responses. For calls that are not safe to repeat (a `POST` that creates something), retry only failures where the request may not have been processed, and let a rejection through:
+
+```python
+@retryable(max_attempts=3, retry_on=(httpx.TransportError,))
+@post("/orders")
+def place_order(self, json: dict) -> dict: ...
+```
+
+Even then, a `ReadTimeout` can hit after the server processed the request: retry non-idempotent calls only when the API deduplicates them (an idempotency key, for example).

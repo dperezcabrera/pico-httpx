@@ -25,6 +25,12 @@ omitted it). Names must match exactly.
 That is the contract: non-2xx raises. Catch it at the boundary, or stack
 `@retryable(retry_on=(httpx.HTTPError,))` for transient failures.
 
+## httpx.ReadTimeout / httpx.ConnectError bubbles out of my service
+
+Also the contract: the client makes one attempt and lets transport failures
+through unwrapped. Raise `http.timeout_seconds` if the upstream is just slow,
+or stack `@retryable` (see the FAQ for non-idempotent calls).
+
 ## How do I point a client at a MockTransport in tests?
 
 Pre-seed the instance before the first call:

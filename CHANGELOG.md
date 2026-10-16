@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Documentation
+
+- The failure contract is now stated and pinned by tests: each call makes one attempt, and timeouts (`httpx.TimeoutException`) and connection errors (`httpx.ConnectError`) reach the caller unwrapped. Stacking pico-resilience's `@retryable` absorbs transient ones and raises `RetryExhaustedError` with the last httpx error; the FAQ shows how to narrow retries to `httpx.TransportError` for calls that are not safe to repeat.
+
 ## [0.1.1] - 2026-09-29
 
 ### Fixed

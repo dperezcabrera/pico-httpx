@@ -24,9 +24,10 @@ pip install pico-httpx
 
 ## Request semantics
 
-- Non-2xx responses raise `httpx.HTTPStatusError` — pair with `@retryable` from pico-resilience for retries.
+- Each call makes exactly one request: no retries inside the client.
+- Failures reach the caller as httpx's own exceptions, unwrapped: non-2xx responses raise `httpx.HTTPStatusError`; timeouts raise `httpx.TimeoutException` (`ConnectTimeout`, `ReadTimeout`, `WriteTimeout`, `PoolTimeout`); connection failures raise `httpx.ConnectError` and the other `httpx.TransportError`s. All of them are `httpx.HTTPError`. Stack `@retryable` from pico-resilience for retries (see the FAQ).
 - Sync stubs share one `httpx.Client`; async stubs one `httpx.AsyncClient`. Both are created lazily on first request and closed on container shutdown.
-- Timeout comes from `http.timeout_seconds` (default 10).
+- Timeout comes from `http.timeout_seconds` (default 10), one value applied to connect, read, write and pool acquisition.
 
 ## Config-driven base URLs
 

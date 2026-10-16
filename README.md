@@ -44,6 +44,7 @@ The class is a regular `@component` — inject it anywhere. Rules:
 - A parameter named `json` is the request body.
 - Every other parameter becomes a query param (`None` values are dropped).
 - Return annotation `httpx.Response` gets the raw response; anything else gets `response.json()` (or `None` on an empty body). Non-2xx raises `httpx.HTTPStatusError`.
+- One attempt per call: timeouts (`httpx.TimeoutException`) and connection failures (`httpx.ConnectError`) reach the caller unwrapped. Retries come from stacking `@retryable` (pico-resilience).
 - Sync stubs share an `httpx.Client`, async stubs an `httpx.AsyncClient`; both close on container shutdown.
 
 Base URL from config instead of code:

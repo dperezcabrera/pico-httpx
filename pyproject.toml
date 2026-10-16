@@ -32,7 +32,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8", "pytest-asyncio", "pytest-cov>=5", "ruff"]
+dev = ["pytest>=8", "pytest-asyncio", "pytest-cov>=5", "ruff", "pico-testing>=0.2.0", "pico-resilience>=0.2.2"]
 
 [project.entry-points."pico_boot.modules"]
 pico_httpx = "pico_httpx"
