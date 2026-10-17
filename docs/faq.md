@@ -24,12 +24,19 @@ def get_user(self, user_id: int) -> dict: ...
 
 A transient timeout or connection error is then retried and the caller only sees the successful result. When every attempt fails, the caller gets `pico_resilience.RetryExhaustedError`, with the last httpx exception in `last_error`.
 
-`httpx.HTTPError` also covers non-2xx responses. For calls that are not safe to repeat (a `POST` that creates something), retry only failures where the request may not have been processed, and let a rejection through:
+`httpx.HTTPError` also covers non-2xx responses and failures after the request was sent. For calls that are not safe to repeat (a `POST` that creates something), retry only failures where the request provably never left the client:
 
 ```python
-@retryable(max_attempts=3, retry_on=(httpx.TransportError,))
+@retryable(max_attempts=3, retry_on=(httpx.ConnectError, httpx.ConnectTimeout, httpx.PoolTimeout))
 @post("/orders")
 def place_order(self, json: dict) -> dict: ...
 ```
 
-Even then, a `ReadTimeout` can hit after the server processed the request: retry non-idempotent calls only when the API deduplicates them (an idempotency key, for example).
+| Failure | Request reached the server? | Safe to repeat a mutation |
+|---|---|---|
+| `ConnectError`, `ConnectTimeout`, `PoolTimeout` | No | Yes |
+| `WriteError`, `WriteTimeout` | Partly | No |
+| `ReadError`, `ReadTimeout`, `RemoteProtocolError` | Yes, the response was lost | No |
+| `HTTPStatusError` | Yes, and it answered | No |
+
+`ConnectTimeout` is a `TimeoutException`, not a `ConnectError`: list both. Do not use `httpx.TransportError` here, it includes the read failures, where the server may already have applied the mutation and a retry duplicates it. Retry those only when the API deduplicates requests (an idempotency key, for example).

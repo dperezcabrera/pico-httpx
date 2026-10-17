@@ -27,7 +27,10 @@ class FlakyApi:
     @get("/items/{item_id}")
     async def get_item_retried_async(self, item_id: int) -> dict: ...
 
-    @retryable(max_attempts=3, backoff_seconds=0, retry_on=(httpx.TransportError,))
+    # only failures where the request never left the client: repeating cannot duplicate the order
+    @retryable(
+        max_attempts=3, backoff_seconds=0, retry_on=(httpx.ConnectError, httpx.ConnectTimeout, httpx.PoolTimeout)
+    )
     @post("/orders")
     def place_order(self, json: dict) -> dict: ...
 
@@ -116,7 +119,35 @@ def test_exhausted_retries_raise_with_the_last_httpx_error(make_container, outco
     assert raised.value.attempts == 3 == len(requests)
 
 
-def test_retry_narrowed_to_transport_errors_does_not_repeat_a_rejected_post(make_container, outcomes):
+@pytest.mark.parametrize(
+    "failure",
+    [httpx.ConnectError("refused"), httpx.ConnectTimeout("connect timed out"), httpx.PoolTimeout("no free connection")],
+)
+def test_non_idempotent_post_is_retried_when_the_request_never_left(make_container, outcomes, failure):
+    queue, requests = outcomes
+    queue.extend([failure, _ok()])
+    assert _api(make_container).place_order({"sku": "LATTE"}) == {"ok": True}
+    assert len(requests) == 2
+
+
+@pytest.mark.parametrize(
+    "failure",
+    [
+        httpx.ReadTimeout("read timed out"),
+        httpx.ReadError("connection reset"),
+        httpx.RemoteProtocolError("server disconnected without sending a response"),
+        httpx.WriteError("broken pipe"),
+    ],
+)
+def test_non_idempotent_post_is_not_repeated_once_the_request_was_sent(make_container, outcomes, failure):
+    queue, requests = outcomes
+    queue.append(failure)
+    with pytest.raises(type(failure)):
+        _api(make_container).place_order({"sku": "LATTE"})
+    assert len(requests) == 1
+
+
+def test_non_idempotent_post_is_not_repeated_on_a_rejection(make_container, outcomes):
     queue, requests = outcomes
     queue.append(httpx.Response(409, json={"detail": "duplicate"}))
     with pytest.raises(httpx.HTTPStatusError):
